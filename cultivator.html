@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리기 DH-M 시리즈 — 내포농기계</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0804;--rust:#a0400d;--ember:#d4580a;--gold:#c9993a;
+  --soil:#2b1d0e;--straw:#e8d5a0;--smoke:#8a7060;--white:#fdf8f0;
+  --dark:#060402;--earth:#1a1008;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4}
+
+nav{
+    position: relative;position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(10,8,4,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,153,58,.12)}
+.nav-logo {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .nav-logo span {
+    color: var(--straw);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    opacity: 0.75;
+  }
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--straw);font-size:.8rem;font-weight:500;letter-spacing:.08em;opacity:.7;transition:opacity .2s,color .2s}
+.nav-links a:hover,.nav-links a.active{opacity:1;color:var(--gold)}
+
+/* HERO — earthy, close-to-the-ground feeling */
+.hero{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;position:relative;overflow:hidden;padding-top:5rem}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 20% 60%,rgba(160,64,13,.2) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 40% at 70% 30%,rgba(201,153,58,.08) 0%,transparent 60%),
+  linear-gradient(160deg,#0a0804 0%,#1a0e04 60%,#0a0604 100%)}
+/* Soil texture lines */
+.hero-bg::before{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:repeating-linear-gradient(0deg,transparent,transparent 6px,rgba(43,29,14,.4) 6px,rgba(43,29,14,.4) 7px);pointer-events:none}
+.hero-visual{position:relative;z-index:2;padding:2rem 3rem 2rem 5rem;opacity:0;animation:fadeIn .9s .2s forwards}
+.hero-visual svg{width:100%;max-width:520px;filter:drop-shadow(0 25px 55px rgba(160,64,13,.45))}
+/* tine spin */
+.tine-spin{animation:tineSpin 1.5s linear infinite;transform-origin:center}
+@keyframes tineSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.hero-content{padding:4rem 5rem 4rem 2rem;position:relative;z-index:2}
+.h-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(160,64,13,.15);border:1px solid rgba(160,64,13,.3);padding:.35rem 1rem;margin-bottom:2rem;font-family:'Bebas Neue',sans-serif;letter-spacing:.25em;font-size:.72rem;color:var(--ember);opacity:0;animation:fadeUp .7s .2s forwards}
+.hero-label{font-family:'Bebas Neue',sans-serif;letter-spacing:.35em;font-size:.82rem;color:var(--rust);margin-bottom:.5rem;opacity:0;animation:fadeUp .7s .3s forwards}
+.hero-title{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(2.8rem,5vw,4.6rem);line-height:1.08;color:var(--white);margin-bottom:1.2rem;opacity:0;animation:fadeUp .7s .4s forwards}
+.hero-title em{font-style:normal;color:var(--gold)}
+.hero-desc{font-size:.93rem;color:var(--smoke);line-height:1.9;font-weight:300;margin-bottom:1.8rem;max-width:420px;opacity:0;animation:fadeUp .7s .5s forwards}
+/* Attachment icons row */
+.attach-row{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2rem;opacity:0;animation:fadeUp .7s .6s forwards}
+.attach-chip{background:rgba(255,255,255,.04);border:1px solid rgba(201,153,58,.15);padding:.4rem .9rem;font-size:.72rem;color:var(--straw);letter-spacing:.1em;display:flex;align-items:center;gap:.4rem;transition:border-color .2s,background .2s}
+.attach-chip:hover{border-color:rgba(201,153,58,.4);background:rgba(201,153,58,.06)}
+.attach-chip svg{width:14px;height:14px;color:var(--gold)}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .7s forwards}
+.btn-rust{background:var(--rust);color:var(--white);padding:.85rem 2rem;font-weight:700;font-size:.85rem;letter-spacing:.1em;text-decoration:none;transition:background .2s,transform .2s;display:inline-block}
+.btn-rust:hover{background:#c05010;transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--straw);padding:.85rem 2rem;font-size:.85rem;letter-spacing:.08em;text-decoration:none;border:1px solid rgba(232,213,160,.2);transition:border-color .2s,color .2s;display:inline-block}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+.kd{height:1px;background:linear-gradient(to right,transparent,rgba(201,153,58,.18),transparent)}
+
+section{padding:6rem 5rem}
+.sec-label{font-family:'Bebas Neue',sans-serif;letter-spacing:.35em;font-size:.78rem;color:var(--ember);margin-bottom:.6rem}
+.sec-title{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(1.8rem,3vw,2.6rem);color:var(--white);line-height:1.2;margin-bottom:.8rem}
+.sec-bar{width:40px;height:3px;background:var(--ember);margin-bottom:1.5rem}
+.sec-desc{color:var(--smoke);font-size:.92rem;line-height:1.9;font-weight:300;max-width:520px}
+
+/* ATTACHMENTS */
+#attachments{background:linear-gradient(180deg,#0a0804 0%,#100902 100%)}
+.att-header{max-width:560px;margin-bottom:4rem}
+.att-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.att-card{background:rgba(255,255,255,.025);border:1px solid rgba(201,153,58,.08);padding:1.8rem;transition:border-color .3s,background .3s,transform .3s;cursor:pointer;position:relative;overflow:hidden}
+.att-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--rust),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.att-card:hover{border-color:rgba(201,153,58,.25);background:rgba(201,153,58,.04);transform:translateY(-3px)}
+.att-card:hover::after{transform:scaleX(1)}
+.att-svg{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;background:rgba(160,64,13,.08);border:1px solid rgba(160,64,13,.15)}
+.att-svg svg{width:70%;height:70%}
+.att-name{font-family:'Noto Serif KR',serif;font-weight:700;font-size:.95rem;color:var(--straw);margin-bottom:.4rem}
+.att-desc{font-size:.78rem;color:var(--smoke);line-height:1.7}
+
+/* COMPARE ENGINE */
+#engine{background:#080602}
+.engine-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.engine-visual{position:relative}
+.engine-svg-wrap{background:linear-gradient(135deg,rgba(160,64,13,.1),rgba(43,29,14,.3));border:1px solid rgba(201,153,58,.1);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.engine-info{}
+.ei-title{font-family:'Noto Serif KR',serif;font-weight:700;font-size:1rem;color:var(--straw);margin-bottom:.5rem;margin-top:1.5rem}
+.ei-title:first-child{margin-top:0}
+.ei-text{font-size:.82rem;color:var(--smoke);line-height:1.8;margin-bottom:.8rem}
+.bar-row{margin-bottom:.8rem}
+.bar-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--smoke);margin-bottom:.3rem}
+.bar-track{height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;background:linear-gradient(to right,var(--rust),var(--gold))}
+
+/* SPECS */
+#specs{background:linear-gradient(180deg,#080602 0%,#0a0804 100%)}
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.spec-group-title{font-family:'Bebas Neue',sans-serif;letter-spacing:.25em;font-size:.74rem;color:var(--ember);margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:1px solid rgba(160,64,13,.25)}
+.spec-row{display:flex;justify-content:space-between;padding:.62rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem}
+.spec-key{color:var(--smoke)}
+.spec-val{color:var(--straw);font-weight:500}
+
+/* MODELS */
+#models{background:#080602}
+.models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(201,153,58,.1);margin-top:3rem}
+.model-col{padding:2rem;border-right:1px solid rgba(201,153,58,.1)}
+.model-col:last-child{border-right:none}
+.model-col.rec{background:rgba(160,64,13,.06)}
+.mc-label{font-family:'Bebas Neue',sans-serif;font-size:.68rem;letter-spacing:.2em;color:var(--ember);margin-bottom:.3rem}
+.mc-model{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);letter-spacing:.1em;line-height:1;margin-bottom:.3rem}
+.mc-sub{font-size:.75rem;color:var(--smoke);margin-bottom:1.5rem}
+.mc-spec-row{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.78rem}
+.mc-spec-k{color:var(--smoke)}
+.mc-spec-v{color:var(--straw)}
+.mc-badge{display:inline-block;background:var(--rust);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:.6rem;letter-spacing:.15em;padding:.2rem .6rem;margin-bottom:.5rem}
+
+/* USE CASES */
+#uses{background:linear-gradient(180deg,#0a0804 0%,#100a02 100%)}
+.uses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.use-card{position:relative;overflow:hidden;background:rgba(255,255,255,.02);border:1px solid rgba(201,153,58,.08);padding:0}
+.use-scene{aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.use-scene svg{width:100%;height:100%;transition:transform .5s cubic-bezier(.25,.46,.45,.94)}
+.use-card:hover .use-scene svg{transform:scale(1.05)}
+.use-info{padding:1.2rem 1.5rem}
+.use-name{font-family:'Noto Serif KR',serif;font-weight:700;font-size:.95rem;color:var(--straw);margin-bottom:.4rem}
+.use-text{font-size:.78rem;color:var(--smoke);line-height:1.7}
+
+/* CTA */
+#cta{background:linear-gradient(135deg,#1a1008 0%,#0a0602 100%);text-align:center;padding:6rem 2rem}
+.cta-title{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(2rem,4vw,3rem);color:var(--white);margin-bottom:.8rem}
+.cta-sub{color:var(--smoke);font-size:.95rem;margin-bottom:2rem;font-weight:300}
+.phone-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);letter-spacing:.1em;margin-bottom:.5rem}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+footer{background:#040201;border-top:1px solid rgba(201,153,58,.1);padding:2rem 5rem;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--smoke)}
+.footer-logo{font-family:'Noto Serif KR',serif;font-weight:900;color:var(--gold)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:960px){
+  nav{
+    position: relative;padding:1rem 1.5rem}
+  .hero{grid-template-columns:1fr;min-height:auto;padding:6rem 0 3rem}
+  .hero-visual{padding:2rem}
+  .hero-content{padding:2rem}
+  section{padding:4rem 2rem}
+  .att-grid{grid-template-columns:1fr 1fr}
+  .engine-layout{grid-template-columns:1fr}
+  .specs-grid{grid-template-columns:1fr}
+  .models-grid{grid-template-columns:1fr}
+  .model-col{border-right:none;border-bottom:1px solid rgba(201,153,58,.1)}
+  .uses-grid{grid-template-columns:1fr 1fr}
+  footer{flex-direction:column;gap:.8rem;text-align:center;padding:2rem}
+}
+@media(max-width:600px){
+  
+  .att-grid{grid-template-columns:1fr 1fr}
+  .uses-grid{grid-template-columns:1fr}
+}
+
+      /* ── MOBILE HAMBURGER NAV ── */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 1px solid rgba(201,153,58,0.25);
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+  .nav-toggle:hover { border-color: rgba(201,153,58,0.6); }
+  .nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: var(--gold);
+    border-radius: 0;
+    transition: transform 0.3s ease, opacity 0.2s ease, width 0.3s ease;
+    transform-origin: center;
+  }
+  .nav-toggle span:nth-child(1) { margin-bottom: 5px; }
+  .nav-toggle span:nth-child(2) { width: 70%; align-self: flex-start; margin-bottom: 5px; }
+  .nav-toggle span:nth-child(3) { width: 40%; align-self: flex-start; }
+  .nav-toggle.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); width: 100%; }
+  .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); width: 100%; }
+
+  @media (max-width: 768px) {
+    .nav-toggle { display: flex; }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: rgba(20,13,6,0.98);
+      border-top: 1px solid rgba(201,153,58,0.2);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-links.is-open { display: flex; }
+
+    .nav-links li {
+      border-bottom: 1px solid rgba(201,153,58,0.1);
+    }
+    .nav-links li a {
+      display: block;
+      padding: 1rem 1.6rem;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--straw, #e8d5a0);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      color: var(--gold, #c9993a);
+      background: rgba(201,153,58,0.08);
+    }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">내포농기계<span>NAEBO AGRO</span></a>
+  <button class="nav-toggle" id="mobileMenuBtn" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">홈</a></li>
+    <li><a href="tractor.html">트랙터</a></li>
+    <li><a href="combine.html">콤바인</a></li>
+    <li><a href="transplanter.html">이앙기</a></li>
+    <li><a href="cultivator.html" class="active">관리기</a></li>
+    <li><a href="index.html#contact">문의하기</a></li>
+  </ul>
+</nav>
+
+
+
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-visual">
+    <svg viewBox="0 0 520 480" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mglow" cx="50%" cy="65%">
+          <stop offset="0%" stop-color="#a0400d" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <linearGradient id="soil-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#2b1d0e"/>
+          <stop offset="100%" stop-color="#1a0e04"/>
+        </linearGradient>
+      </defs>
+      <rect width="520" height="480" fill="url(#mglow)"/>
+      <!-- Shadow -->
+      <ellipse cx="260" cy="460" rx="170" ry="16" fill="#000" opacity="0.5"/>
+      <!-- Tilled soil -->
+      <rect x="0" y="360" width="520" height="120" fill="url(#soil-grad)"/>
+      <!-- Soil furrows -->
+      <path d="M0 370 Q130 363 260 375 Q390 387 520 370" stroke="#4a2a08" stroke-width="2.5" fill="none" opacity="0.6"/>
+      <path d="M0 390 Q130 383 260 395 Q390 407 520 390" stroke="#4a2a08" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M0 410 Q130 403 260 415 Q390 427 520 410" stroke="#4a2a08" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <!-- Clumps of dirt -->
+      <g fill="#3a2010" opacity="0.5">
+        <ellipse cx="80"  cy="380" rx="12" ry="6"/>
+        <ellipse cx="200" cy="400" rx="10" ry="5"/>
+        <ellipse cx="350" cy="378" rx="14" ry="6"/>
+        <ellipse cx="440" cy="395" rx="9"  ry="5"/>
+      </g>
+      <!-- Engine block (centered, large) -->
+      <rect x="178" y="148" width="164" height="110" rx="7" fill="#8b3a08" stroke="#c9993a" stroke-width="2.5"/>
+      <!-- Engine body detail -->
+      <rect x="192" y="160" width="62" height="86" rx="4" fill="#7a3006"/>
+      <rect x="266" y="160" width="62" height="86" rx="4" fill="#7a3006"/>
+      <!-- Cooling fins -->
+      <g stroke="#a04010" stroke-width="1.2">
+        <line x1="206" y1="160" x2="206" y2="246"/>
+        <line x1="220" y1="160" x2="220" y2="246"/>
+        <line x1="234" y1="160" x2="234" y2="246"/>
+        <line x1="248" y1="160" x2="248" y2="246"/>
+        <line x1="280" y1="160" x2="280" y2="246"/>
+        <line x1="294" y1="160" x2="294" y2="246"/>
+        <line x1="308" y1="160" x2="308" y2="246"/>
+      </g>
+      <!-- Exhaust stack -->
+      <rect x="245" y="78" width="16" height="80" fill="#1a1008" rx="3"/>
+      <ellipse cx="253" cy="78" rx="12" ry="6" fill="#2b2b2b"/>
+      <!-- Smoke -->
+      <ellipse cx="256" cy="60" rx="16" ry="10" fill="#444" opacity="0.35"/>
+      <ellipse cx="260" cy="40" rx="20" ry="13" fill="#333" opacity="0.22"/>
+      <ellipse cx="265" cy="20" rx="24" ry="15" fill="#333" opacity="0.12"/>
+      <!-- Fuel tank top -->
+      <ellipse cx="260" cy="148" rx="40" ry="18" fill="#2b1d0e" stroke="#8b6a1a" stroke-width="2"/>
+      <ellipse cx="260" cy="148" rx="12" ry="7" fill="#1a1008" stroke="#c9993a" stroke-width="1.5"/>
+      <!-- Main transmission housing -->
+      <rect x="212" y="256" width="96" height="78" rx="5" fill="#4a2010" stroke="#8b5a20" stroke-width="2"/>
+      <!-- Transmission detail -->
+      <rect x="224" y="268" width="32" height="54" rx="3" fill="#3a1808"/>
+      <rect x="264" y="268" width="32" height="54" rx="3" fill="#3a1808"/>
+      <!-- Handlebars -->
+      <path d="M 205 304 L 140 278 L 112 264" stroke="#c9993a" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M 315 304 L 380 278 L 408 264" stroke="#c9993a" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <!-- Handlebar supports -->
+      <line x1="175" y1="292" x2="178" y2="310" stroke="#8b6a1a" stroke-width="3"/>
+      <line x1="345" y1="292" x2="342" y2="310" stroke="#8b6a1a" stroke-width="3"/>
+      <!-- Grips -->
+      <rect x="95"  y="254" width="28" height="20" rx="10" fill="#1a1008" stroke="#c9993a" stroke-width="2"/>
+      <rect x="397" y="254" width="28" height="20" rx="10" fill="#1a1008" stroke="#c9993a" stroke-width="2"/>
+      <!-- Grip texture -->
+      <g stroke="#c9993a" stroke-width="1" opacity="0.4">
+        <line x1="102" y1="256" x2="102" y2="272"/>
+        <line x1="108" y1="256" x2="108" y2="272"/>
+        <line x1="114" y1="256" x2="114" y2="272"/>
+      </g>
+      <g stroke="#c9993a" stroke-width="1" opacity="0.4">
+        <line x1="404" y1="256" x2="404" y2="272"/>
+        <line x1="410" y1="256" x2="410" y2="272"/>
+        <line x1="416" y1="256" x2="416" y2="272"/>
+      </g>
+      <!-- Throttle lever -->
+      <line x1="118" y1="262" x2="138" y2="240" stroke="#c9993a" stroke-width="3" stroke-linecap="round"/>
+      <!-- Depth wheel -->
+      <circle cx="260" cy="334" r="22" fill="#1a1008" stroke="#8b5a20" stroke-width="2"/>
+      <circle cx="260" cy="334" r="14" fill="#120d06"/>
+      <!-- Rotary tines assembly (LARGE) -->
+      <circle cx="260" cy="388" r="58" fill="none" stroke="#3a2008" stroke-width="3"/>
+      <!-- Tines (animated) -->
+      <g class="tine-spin" style="transform-origin:260px 388px">
+        <g stroke="#a0400d" stroke-width="6" stroke-linecap="round">
+          <line x1="260" y1="330" x2="260" y2="310"/>
+          <line x1="260" y1="446" x2="260" y2="466"/>
+          <line x1="318" y1="388" x2="338" y2="388"/>
+          <line x1="202" y1="388" x2="182" y2="388"/>
+          <line x1="301" y1="347" x2="316" y2="332"/>
+          <line x1="301" y1="429" x2="316" y2="444"/>
+          <line x1="219" y1="347" x2="204" y2="332"/>
+          <line x1="219" y1="429" x2="204" y2="444"/>
+        </g>
+        <!-- Tine tips -->
+        <g fill="#c9993a">
+          <circle cx="260" cy="308" r="5"/>
+          <circle cx="260" cy="468" r="5"/>
+          <circle cx="340" cy="388" r="5"/>
+          <circle cx="180" cy="388" r="5"/>
+          <circle cx="318" cy="330" r="4"/>
+          <circle cx="318" cy="446" r="4"/>
+          <circle cx="202" cy="330" r="4"/>
+          <circle cx="202" cy="446" r="4"/>
+        </g>
+      </g>
+      <!-- Hub -->
+      <circle cx="260" cy="388" r="18" fill="#c9993a"/>
+      <circle cx="260" cy="388" r="10" fill="#1a1008"/>
+      <!-- Drag chain (behind tines) -->
+      <path d="M 200 430 Q 260 445 320 430" stroke="#8b5a20" stroke-width="3" fill="none" stroke-dasharray="6 4"/>
+      <!-- Model text -->
+      <text x="70" y="472" font-family="Bebas Neue,sans-serif" font-size="38" fill="#a0400d" opacity="0.12" letter-spacing="4">DH-M CULTIVATOR</text>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <div class="h-badge">● 다목적 만능 농기계</div>
+    <div class="hero-label">CULTIVATOR / DH-M SERIES</div>
+    <h1 class="hero-title">내포 밭농사의<br><em>만능 파트너</em></h1>
+    <p class="hero-desc">내포 밭을 위한 만능 농기계. 내포농기계 DH-M 관리기는 경운부터 배토, 이랑 만들기, 방제까지 — 가볍고 강인한 설계로 충남 내포 어느 밭에서도 최고의 작업 효율을 보여줍니다.</p>
+    <div class="attach-row">
+      <div class="attach-chip">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5"/><line x1="7" y1="2" x2="7" y2="12"/></svg>
+        로터리
+      </div>
+      <div class="attach-chip">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12 L7 2 L12 12"/></svg>
+        배토기
+      </div>
+      <div class="attach-chip">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="10" height="6" rx="1"/></svg>
+        두둑성형기
+      </div>
+      <div class="attach-chip">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="3"/><line x1="7" y1="1" x2="7" y2="4"/><line x1="7" y1="10" x2="7" y2="13"/><line x1="1" y1="7" x2="4" y2="7"/><line x1="10" y1="7" x2="13" y2="7"/></svg>
+        방제 펌프
+      </div>
+      <div class="attach-chip">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 L7 3 L11 11 L3 11Z"/></svg>
+        두둑피복기
+      </div>
+    </div>
+    <div class="hero-cta">
+      <a href="#attachments" class="btn-rust">어태치먼트 보기</a>
+      <a href="#specs" class="btn-ghost">제원 확인</a>
+    </div>
+  </div>
+</div>
+
+<div class="kd"></div>
+
+<!-- ATTACHMENTS -->
+<section id="attachments">
+  <div class="att-header">
+    <div class="sec-label reveal">ATTACHMENTS</div>
+    <div class="sec-bar reveal"></div>
+    <h2 class="sec-title reveal">한 대로 모든 작업을 — 어태치먼트 시스템</h2>
+    <p class="sec-desc reveal">DH-M 관리기는 다양한 작업기를 간단히 교체할 수 있습니다. 공구 없이 5분 만에 교체 가능한 원터치 연결 시스템.</p>
+  </div>
+  <div class="att-grid">
+    <div class="att-card reveal">
+      <div class="att-svg">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="28" stroke="#a0400d" stroke-width="2"/>
+          <g stroke="#c9993a" stroke-width="3" stroke-linecap="round">
+            <line x1="40" y1="12" x2="40" y2="2"/>
+            <line x1="40" y1="68" x2="40" y2="78"/>
+            <line x1="68" y1="40" x2="78" y2="40"/>
+            <line x1="12" y1="40" x2="2" y2="40"/>
+            <line x1="60" y1="20" x2="68" y2="12"/>
+            <line x1="20" y1="60" x2="12" y2="68"/>
+            <line x1="60" y1="60" x2="68" y2="68"/>
+            <line x1="20" y1="20" x2="12" y2="12"/>
+          </g>
+          <circle cx="40" cy="40" r="8" fill="#c9993a"/>
+        </svg>
+      </div>
+      <div class="att-name">로터리 (경운)</div>
+      <div class="att-desc">역회전/정회전 선택 가능. 600~900mm 폭. 자갈 많은 밭도 거뜬한 고강도 티타늄 코팅 날.</div>
+    </div>
+    <div class="att-card reveal">
+      <div class="att-svg">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 10 70 L 40 15 L 70 70 Z" stroke="#c9993a" stroke-width="2.5" fill="none"/>
+          <path d="M 25 70 L 40 35 L 55 70" stroke="#a0400d" stroke-width="2" fill="none"/>
+          <line x1="10" y1="70" x2="70" y2="70" stroke="#c9993a" stroke-width="2.5"/>
+          <line x1="40" y1="70" x2="40" y2="78" stroke="#c9993a" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="att-name">배토기</div>
+      <div class="att-desc">이랑 양 옆 흙을 모아 올립니다. 배토 폭 조절 가능. 감자·고구마·파 등 재배에 최적.</div>
+    </div>
+    <div class="att-card reveal">
+      <div class="att-svg">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="32" width="60" height="20" rx="5" stroke="#c9993a" stroke-width="2.5"/>
+          <path d="M 10 42 Q 20 35 30 42 Q 40 49 50 42 Q 60 35 70 42" stroke="#a0400d" stroke-width="2" fill="none"/>
+          <line x1="40" y1="52" x2="40" y2="65" stroke="#c9993a" stroke-width="2.5"/>
+          <line x1="25" y1="65" x2="55" y2="65" stroke="#c9993a" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="att-name">두둑성형기</div>
+      <div class="att-desc">고정 폭 두둑을 정밀하게 만듭니다. 두둑 높이 15~25cm 조절. 비닐 피복과 병행 작업 가능.</div>
+    </div>
+    <div class="att-card reveal">
+      <div class="att-svg">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="28" r="14" stroke="#c9993a" stroke-width="2"/>
+          <circle cx="40" cy="28" r="6" stroke="#a0400d" stroke-width="2"/>
+          <path d="M 26 42 Q 40 52 54 42" stroke="#c9993a" stroke-width="2.5" fill="none"/>
+          <line x1="30" y1="42" x2="20" y2="70" stroke="#c9993a" stroke-width="2"/>
+          <line x1="50" y1="42" x2="60" y2="70" stroke="#c9993a" stroke-width="2"/>
+          <line x1="40" y1="42" x2="40" y2="70" stroke="#c9993a" stroke-width="2.5"/>
+          <!-- Droplets -->
+          <circle cx="24" cy="76" r="3" fill="#6ab0c0" opacity="0.7"/>
+          <circle cx="40" cy="78" r="3" fill="#6ab0c0" opacity="0.7"/>
+          <circle cx="56" cy="76" r="3" fill="#6ab0c0" opacity="0.7"/>
+        </svg>
+      </div>
+      <div class="att-name">방제 펌프 연결</div>
+      <div class="att-desc">엔진 출력축에 방제 펌프를 직결합니다. 별도 동력 불필요. 과수원·밭 약제 살포에 활용.</div>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<!-- ENGINE -->
+<section id="engine" style="background:#080602">
+  <div class="engine-layout">
+    <div class="engine-visual reveal">
+      <div class="engine-svg-wrap">
+        <svg viewBox="0 0 400 300" style="width:100%;height:100%" xmlns="http://www.w3.org/2000/svg">
+          <defs><radialGradient id="eg" cx="50%" cy="50%"><stop offset="0%" stop-color="#a0400d" stop-opacity="0.25"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+          <rect width="400" height="300" fill="url(#eg)"/>
+          <!-- Engine cross-section illustration -->
+          <rect x="110" y="60" width="180" height="140" rx="8" fill="#8b3a08" stroke="#c9993a" stroke-width="2"/>
+          <!-- Cylinders -->
+          <rect x="128" y="70" width="64" height="110" rx="4" fill="#7a3006" stroke="#a04010" stroke-width="1"/>
+          <rect x="208" y="70" width="64" height="110" rx="4" fill="#7a3006" stroke="#a04010" stroke-width="1"/>
+          <!-- Pistons -->
+          <rect x="140" y="120" width="40" height="28" rx="2" fill="#c9993a" opacity="0.7"/>
+          <rect x="220" y="100" width="40" height="28" rx="2" fill="#c9993a" opacity="0.7"/>
+          <!-- Connecting rods -->
+          <line x1="160" y1="148" x2="160" y2="180" stroke="#8b5a20" stroke-width="5" stroke-linecap="round"/>
+          <line x1="240" y1="128" x2="240" y2="180" stroke="#8b5a20" stroke-width="5" stroke-linecap="round"/>
+          <!-- Crankshaft -->
+          <path d="M 130 180 Q 160 165 200 180 Q 240 195 270 180" stroke="#c9993a" stroke-width="5" fill="none"/>
+          <!-- Exhaust port -->
+          <rect x="282" y="88" width="10" height="60" fill="#1a1008" rx="2"/>
+          <!-- Air filter -->
+          <rect x="108" y="76" width="12" height="40" rx="3" fill="#2b1d0e" stroke="#8b6a1a" stroke-width="1.5"/>
+          <!-- Labels -->
+          <text x="40" y="82" font-family="Bebas Neue,sans-serif" font-size="10" fill="#c9993a" opacity="0.8" letter-spacing="1">AIR</text>
+          <line x1="60" y1="80" x2="106" y2="82" stroke="#c9993a" stroke-width="1" stroke-dasharray="3 2" opacity="0.6"/>
+          <text x="300" y="122" font-family="Bebas Neue,sans-serif" font-size="10" fill="#a0400d" opacity="0.8" letter-spacing="1">EXH</text>
+          <line x1="295" y1="120" x2="293" y2="108" stroke="#a0400d" stroke-width="1" stroke-dasharray="3 2" opacity="0.6"/>
+          <text x="148" y="250" font-family="Bebas Neue,sans-serif" font-size="24" fill="#c9993a" opacity="0.15" letter-spacing="4">DIESEL ENGINE</text>
+        </svg>
+      </div>
+    </div>
+    <div class="engine-info">
+      <div class="sec-label reveal">ENGINE OPTIONS</div>
+      <div class="sec-bar reveal"></div>
+      <h2 class="sec-title reveal">용도에 맞는<br>엔진 선택</h2>
+      <div class="ei-title reveal">가솔린 엔진 (DH-M55G)</div>
+      <div class="ei-text reveal">5.5HP 공랭 가솔린. 가볍고 시동 편리. 소규모 가정 텃밭부터 주말농장까지 적합합니다. 중량 62kg으로 운반 용이.</div>
+      <div class="bar-row reveal">
+        <div class="bar-label"><span>출력</span><span>5.5 HP</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:55%"></div></div>
+      </div>
+      <div class="bar-row reveal">
+        <div class="bar-label"><span>중량</span><span>62 kg</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:45%"></div></div>
+      </div>
+      <div class="ei-title reveal">디젤 엔진 (DH-M90D)</div>
+      <div class="ei-text reveal">9HP 수냉 디젤. 강력한 토크와 연비. 대규모 밭, 자갈 많은 토양, 장시간 연속 작업에 최적입니다. 역회전 로터리 기본.</div>
+      <div class="bar-row reveal">
+        <div class="bar-label"><span>출력</span><span>9 HP</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+      </div>
+      <div class="bar-row reveal">
+        <div class="bar-label"><span>중량</span><span>98 kg</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<!-- USE CASES -->
+<section id="uses" style="background:linear-gradient(180deg,#0a0804 0%,#100a02 100%)">
+  <div class="sec-label reveal">USE CASES</div>
+  <div class="sec-bar reveal"></div>
+  <h2 class="sec-title reveal">이런 작업에 DH-M을 사용합니다</h2>
+  <div class="uses-grid">
+    <div class="use-card reveal">
+      <div class="use-scene">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="ug1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#0f1a06"/><stop offset="100%" stop-color="#2b1d0e"/></linearGradient></defs>
+          <rect width="300" height="200" fill="url(#ug1)"/>
+          <!-- Tilled rows -->
+          <g fill="#3a2a0a" opacity="0.7">
+            <path d="M 0 120 Q 75 110 150 120 Q 225 130 300 120 L 300 140 Q 225 150 150 140 Q 75 130 0 140 Z"/>
+            <path d="M 0 150 Q 75 140 150 150 Q 225 160 300 150 L 300 170 Q 225 180 150 170 Q 75 160 0 170 Z"/>
+          </g>
+          <!-- Cultivator silhouette -->
+          <rect x="120" y="55" width="60" height="45" rx="4" fill="#8b3a08"/>
+          <rect x="100" y="55" width="100" height="30" rx="3" fill="#6a2a06" opacity="0.8"/>
+          <!-- Handlebars -->
+          <path d="M 128 90 L 95 80" stroke="#c9993a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 172 90 L 205 80" stroke="#c9993a" stroke-width="4" stroke-linecap="round"/>
+          <!-- Tines -->
+          <circle cx="150" cy="125" r="22" fill="none" stroke="#a0400d" stroke-width="2"/>
+          <g stroke="#c9993a" stroke-width="3" stroke-linecap="round">
+            <line x1="150" y1="103" x2="150" y2="94"/>
+            <line x1="172" y1="125" x2="181" y2="125"/>
+            <line x1="150" y1="147" x2="150" y2="156"/>
+            <line x1="128" y1="125" x2="119" y2="125"/>
+          </g>
+        </svg>
+      </div>
+      <div class="use-info">
+        <div class="use-name">밭 경운 작업</div>
+        <div class="use-text">봄철 파종 전 토양을 갈아엎어 공기를 불어넣습니다. 경운 깊이 최대 25cm.</div>
+      </div>
+    </div>
+    <div class="use-card reveal">
+      <div class="use-scene">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="ug2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1a0f06"/><stop offset="100%" stop-color="#2b1a0a"/></linearGradient></defs>
+          <rect width="300" height="200" fill="url(#ug2)"/>
+          <!-- Ridges formed -->
+          <g fill="#4a2a08">
+            <path d="M 30 160 Q 75 130 120 160 L 120 200 L 30 200 Z" opacity="0.8"/>
+            <path d="M 120 160 Q 165 130 210 160 L 210 200 L 120 200 Z" opacity="0.7"/>
+            <path d="M 210 160 Q 255 130 300 160 L 300 200 L 210 200 Z" opacity="0.8"/>
+          </g>
+          <!-- Ridge tops -->
+          <path d="M 30 160 Q 75 130 120 160" stroke="#8b6a1a" stroke-width="2" fill="none"/>
+          <path d="M 120 160 Q 165 130 210 160" stroke="#8b6a1a" stroke-width="2" fill="none"/>
+          <path d="M 210 160 Q 255 130 300 160" stroke="#8b6a1a" stroke-width="2" fill="none"/>
+          <!-- Seeds/plants on ridges -->
+          <g stroke="#5aaa40" stroke-width="2" opacity="0.8">
+            <line x1="75" y1="140" x2="70" y2="124"/><line x1="70" y1="124" x2="64" y2="115"/>
+            <line x1="165" y1="138" x2="160" y2="122"/><line x1="160" y1="122" x2="154" y2="113"/>
+            <line x1="255" y1="140" x2="250" y2="124"/><line x1="250" y1="124" x2="244" y2="115"/>
+          </g>
+          <!-- Cultivator (smaller) -->
+          <rect x="128" y="55" width="44" height="35" rx="3" fill="#8b3a08"/>
+          <path d="M 134 78 L 110 70 M 166 78 L 190 70" stroke="#c9993a" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="use-info">
+        <div class="use-name">두둑 만들기 (배토)</div>
+        <div class="use-text">감자, 고구마, 파, 마늘 등 두둑 재배 작물의 이랑을 정확하게 성형합니다.</div>
+      </div>
+    </div>
+    <div class="use-card reveal">
+      <div class="use-scene">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="ug3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#0a1508"/><stop offset="100%" stop-color="#1a2a0e"/></linearGradient></defs>
+          <rect width="300" height="200" fill="url(#ug3)"/>
+          <!-- Crops rows -->
+          <g stroke="#4a8030" stroke-width="1.5" opacity="0.6">
+            <line x1="50"  y1="200" x2="45"  y2="120"/>
+            <line x1="100" y1="200" x2="95"  y2="115"/>
+            <line x1="150" y1="200" x2="145" y2="122"/>
+            <line x1="200" y1="200" x2="195" y2="118"/>
+            <line x1="250" y1="200" x2="245" y2="120"/>
+          </g>
+          <!-- Spray droplets -->
+          <g fill="#6ab0d0" opacity="0.5">
+            <circle cx="70"  cy="142" r="3"/>
+            <circle cx="90"  cy="155" r="2.5"/>
+            <circle cx="120" cy="138" r="3"/>
+            <circle cx="145" cy="150" r="2.5"/>
+            <circle cx="170" cy="142" r="3"/>
+            <circle cx="195" cy="148" r="2.5"/>
+            <circle cx="220" cy="140" r="3"/>
+            <circle cx="55"  cy="160" r="2.5"/>
+            <circle cx="108" cy="162" r="2.5"/>
+            <circle cx="158" cy="158" r="3"/>
+            <circle cx="208" cy="160" r="2.5"/>
+            <circle cx="258" cy="158" r="3"/>
+          </g>
+          <!-- Pump / sprayer attachment -->
+          <rect x="115" y="68" width="70" height="50" rx="4" fill="#8b3a08"/>
+          <rect x="125" y="75" width="50" height="35" rx="2" fill="#6a2a06"/>
+          <!-- Nozzle bar -->
+          <line x1="40" y1="118" x2="260" y2="118" stroke="#8b5a20" stroke-width="4"/>
+          <g fill="#c9993a">
+            <circle cx="70"  cy="118" r="4"/><circle cx="110" cy="118" r="4"/>
+            <circle cx="150" cy="118" r="4"/><circle cx="190" cy="118" r="4"/>
+            <circle cx="230" cy="118" r="4"/>
+          </g>
+        </svg>
+      </div>
+      <div class="use-info">
+        <div class="use-name">방제 살포</div>
+        <div class="use-text">엔진 동력으로 방제 펌프를 구동합니다. 과수원, 고추밭 등 약제 살포 작업에 활용됩니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<!-- SPECS -->
+<section id="specs">
+  <div class="sec-label reveal">SPECIFICATIONS</div>
+  <div class="sec-bar reveal"></div>
+  <h2 class="sec-title reveal">DH-M90D 상세 제원</h2>
+  <div class="specs-grid">
+    <div>
+      <div class="spec-group-title reveal">엔진</div>
+      <div class="spec-row reveal"><span class="spec-key">형식</span><span class="spec-val">수냉 단기통 디젤</span></div>
+      <div class="spec-row reveal"><span class="spec-key">출력</span><span class="spec-val">9 HP / 3,000 rpm</span></div>
+      <div class="spec-row reveal"><span class="spec-key">배기량</span><span class="spec-val">418 cc</span></div>
+      <div class="spec-row reveal"><span class="spec-key">연료탱크</span><span class="spec-val">3.5 L</span></div>
+      <div class="spec-row reveal"><span class="spec-key">시동 방식</span><span class="spec-val">리코일 + 전기 시동 (옵션)</span></div>
+      <div class="spec-group-title reveal" style="margin-top:1.5rem">로터리</div>
+      <div class="spec-row reveal"><span class="spec-key">경운 폭</span><span class="spec-val">600 / 750 / 900 mm</span></div>
+      <div class="spec-row reveal"><span class="spec-key">경운 깊이</span><span class="spec-val">최대 250 mm</span></div>
+      <div class="spec-row reveal"><span class="spec-key">날 수</span><span class="spec-val">24~32매</span></div>
+      <div class="spec-row reveal"><span class="spec-key">날 재질</span><span class="spec-val">고탄소강 (HRC 45 이상)</span></div>
+    </div>
+    <div>
+      <div class="spec-group-title reveal">주행 / 차체</div>
+      <div class="spec-row reveal"><span class="spec-key">변속</span><span class="spec-val">2전진 / 1후진</span></div>
+      <div class="spec-row reveal"><span class="spec-key">최대 작업 속도</span><span class="spec-val">0.8 m/s</span></div>
+      <div class="spec-row reveal"><span class="spec-key">기체 중량</span><span class="spec-val">98 kg</span></div>
+      <div class="spec-row reveal"><span class="spec-key">전장</span><span class="spec-val">1,820 mm</span></div>
+      <div class="spec-group-title reveal" style="margin-top:1.5rem">어태치먼트 호환</div>
+      <div class="spec-row reveal"><span class="spec-key">로터리 폭</span><span class="spec-val">600 / 750 / 900 mm</span></div>
+      <div class="spec-row reveal"><span class="spec-key">배토기</span><span class="spec-val">싱글 / 더블 배토판</span></div>
+      <div class="spec-row reveal"><span class="spec-key">두둑성형기</span><span class="spec-val">폭 30~60cm</span></div>
+      <div class="spec-row reveal"><span class="spec-key">방제 펌프</span><span class="spec-val">PTO 직결 방식</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<!-- MODELS -->
+<section id="models">
+  <div class="sec-label reveal">MODEL LINEUP</div>
+  <div class="sec-bar reveal"></div>
+  <h2 class="sec-title reveal">내포농기계 DH-M 시리즈 라인업</h2>
+  <div class="models-grid reveal">
+    <div class="model-col">
+      <div class="mc-label">GASOLINE</div>
+      <div class="mc-model">DH-M55G</div>
+      <div class="mc-sub">5.5HP 가솔린 / 텃밭·주말농장</div>
+      <div class="mc-spec-row"><span class="mc-spec-k">엔진</span><span class="mc-spec-v">5.5HP 가솔린</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">로터리 폭</span><span class="mc-spec-v">600mm</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">중량</span><span class="mc-spec-v">62 kg</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">역회전</span><span class="mc-spec-v">옵션</span></div>
+    </div>
+    <div class="model-col rec">
+      <div class="mc-badge">추천</div>
+      <div class="mc-label">DIESEL / BEST SELLER</div>
+      <div class="mc-model">DH-M90D</div>
+      <div class="mc-sub">9HP 디젤 / 중대형 밭 범용</div>
+      <div class="mc-spec-row"><span class="mc-spec-k">엔진</span><span class="mc-spec-v">9HP 디젤</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">로터리 폭</span><span class="mc-spec-v">600~900mm</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">중량</span><span class="mc-spec-v">98 kg</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">역회전</span><span class="mc-spec-v">기본</span></div>
+    </div>
+    <div class="model-col">
+      <div class="mc-label">DIESEL PRO</div>
+      <div class="mc-model">DH-M110D</div>
+      <div class="mc-sub">11HP 디젤 / 전문 농가</div>
+      <div class="mc-spec-row"><span class="mc-spec-k">엔진</span><span class="mc-spec-v">11HP 디젤</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">로터리 폭</span><span class="mc-spec-v">750~1,000mm</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">중량</span><span class="mc-spec-v">118 kg</span></div>
+      <div class="mc-spec-row"><span class="mc-spec-k">역회전</span><span class="mc-spec-v">기본 (강화형)</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<section id="cta" style="background:linear-gradient(135deg,#1a1008 0%,#0a0602 100%);text-align:center;padding:6rem 2rem">
+  <div class="sec-label" style="text-align:center">CONTACT US</div>
+  <div class="sec-bar" style="margin:.8rem auto 1.5rem"></div>
+  <div class="phone-num">041-634-7111 / 041-634-7110</div>
+  <h2 class="cta-title">관리기 상담 및 구매</h2>
+  <p class="cta-sub">원하는 모델과 어태치먼트 조합을 전문 상담사가 도와드립니다</p>
+  <div class="cta-btns">
+    <a href="tel:0416347111" class="btn-rust">☎ 041-634-7111</a>
+      <a href="tel:0416347110" class="btn-ghost">☎ 041-634-7110</a>
+    <a href="index.html" class="btn-ghost">← 메인으로</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">내포농기계</div>
+  <div>© 2025 내포농기계(주). All rights reserved.</div>
+  <div>충남 홍성군 구항면 구항길 264번길 22 | 041-634-7111 / 041-634-7110</div>
+</footer>
+
+<script>
+const reveals=document.querySelectorAll('.reveal');
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');ro.unobserve(x.target)}})},{threshold:0.12});
+reveals.forEach(r=>ro.observe(r));
+
+  /* ── hamburger ── */
+  ;(function(){
+    var btn = document.getElementById('mobileMenuBtn');
+    var drawer = document.getElementById('navLinks');
+    var dim = null;
+    if(!btn||!drawer) return;
+    function show(){btn.classList.add('is-open');drawer.classList.add('is-open');}
+    function hide(){btn.classList.remove('is-open');drawer.classList.remove('is-open');}
+    btn.addEventListener('click',function(e){e.stopPropagation();drawer.classList.contains('is-open')?hide():show();});
+    
+    drawer.querySelectorAll('a').forEach(function(a){a.addEventListener('click',hide);});
+  })();
+
+</script>
+</body>
+</html>

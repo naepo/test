@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이앙기 DH-P 시리즈 — 내포농기계</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#030d08;--green:#2a7a3a;--lime:#6aaa50;--rice:#c9993a;
+  --water:#0a2a3a;--straw:#e8d5a0;--smoke:#7a9070;--white:#f0fdf4;
+  --dark-green:#0a1f0e;--deep:#051008;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4}
+
+nav{
+    position: relative;position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(3,13,8,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(106,170,80,.12)}
+.nav-logo {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .nav-logo span {
+    color: var(--straw);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    opacity: 0.75;
+  }
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--straw);font-size:.8rem;font-weight:500;letter-spacing:.08em;opacity:.7;transition:opacity .2s,color .2s}
+.nav-links a:hover,.nav-links a.active{opacity:1;color:var(--lime)}
+
+/* HERO — rice paddy atmosphere */
+.hero{min-height:100vh;position:relative;overflow:hidden;display:grid;grid-template-rows:1fr auto;padding-top:5rem}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 30% 40%,rgba(42,122,58,.15) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 80% at 80% 80%,rgba(10,42,58,.3) 0%,transparent 60%),
+  linear-gradient(180deg,#030d08 0%,#051a0c 60%,#0a2a18 100%)}
+/* Water ripple lines */
+.hero-water{position:absolute;bottom:0;left:0;right:0;height:35%}
+.hero-water svg{width:100%;height:100%}
+.hero-inner{position:relative;z-index:5;display:grid;grid-template-columns:1fr 1.1fr;align-items:center;padding:2rem 5rem 3rem;gap:4rem}
+.hero-content{}
+.h-eyebrow{font-family:'Bebas Neue',sans-serif;letter-spacing:.4em;font-size:.8rem;color:var(--lime);margin-bottom:.8rem;opacity:0;animation:fadeUp .7s .2s forwards}
+.hero-title{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(2.8rem,5vw,4.5rem);line-height:1.1;color:var(--white);margin-bottom:1.2rem;opacity:0;animation:fadeUp .7s .35s forwards}
+.hero-title em{font-style:normal;color:var(--lime)}
+.hero-desc{font-size:.93rem;color:var(--smoke);line-height:1.9;font-weight:300;margin-bottom:2rem;opacity:0;animation:fadeUp .7s .5s forwards;max-width:420px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem;opacity:0;animation:fadeUp .7s .6s forwards}
+.hbadge{background:rgba(106,170,80,.1);border:1px solid rgba(106,170,80,.25);padding:.3rem .8rem;font-size:.72rem;color:var(--lime);letter-spacing:.1em;font-family:'Bebas Neue',sans-serif}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .7s forwards}
+.btn-green{background:var(--green);color:var(--white);padding:.85rem 2rem;font-weight:700;font-size:.85rem;letter-spacing:.1em;text-decoration:none;transition:background .2s,transform .2s;display:inline-block}
+.btn-green:hover{background:#3a9a4a;transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--straw);padding:.85rem 2rem;font-size:.85rem;letter-spacing:.08em;text-decoration:none;border:1px solid rgba(232,213,160,.2);transition:border-color .2s,color .2s;display:inline-block}
+.btn-ghost:hover{border-color:var(--lime);color:var(--lime)}
+.hero-visual{position:relative;z-index:5;opacity:0;animation:fadeIn .9s .3s forwards}
+.hero-visual svg{width:100%;filter:drop-shadow(0 30px 50px rgba(10,42,20,.6))}
+/* floating arm animation */
+.plant-arm{animation:plantBob 2s ease-in-out infinite}
+@keyframes plantBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+/* seedling growth animation */
+.seedling-grow{animation:grow 3s ease-in-out infinite alternate}
+@keyframes grow{from{transform:scaleY(0.8)}to{transform:scaleY(1)}}
+
+.kd{height:1px;background:linear-gradient(to right,transparent,rgba(106,170,80,.18),transparent)}
+
+section{padding:6rem 5rem}
+.sec-label{font-family:'Bebas Neue',sans-serif;letter-spacing:.35em;font-size:.78rem;color:var(--lime);margin-bottom:.6rem}
+.sec-title{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(1.8rem,3vw,2.6rem);color:var(--white);line-height:1.2;margin-bottom:.8rem}
+.sec-bar{width:40px;height:3px;background:var(--lime);margin-bottom:1.5rem}
+.sec-desc{color:var(--smoke);font-size:.92rem;line-height:1.9;font-weight:300;max-width:520px}
+
+/* ACCURACY section */
+#accuracy{background:linear-gradient(180deg,#030d08 0%,#051a0c 100%)}
+.accuracy-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.accuracy-visual{position:relative}
+.acc-svg-wrap{background:linear-gradient(135deg,rgba(42,122,58,.15),rgba(10,42,58,.3));border:1px solid rgba(106,170,80,.15);padding:0;overflow:hidden;aspect-ratio:1/1}
+.acc-svg-wrap svg{width:100%;height:100%}
+.acc-stat{position:absolute;background:rgba(3,13,8,.9);border:1px solid rgba(106,170,80,.3);padding:.7rem 1.2rem}
+.acc-stat.tr{top:-1rem;right:-1rem}
+.acc-stat.bl{bottom:-1rem;left:-1rem}
+.acc-stat .sv{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--lime);line-height:1}
+.acc-stat .sk{font-size:.65rem;color:var(--smoke);letter-spacing:.12em}
+.accuracy-points{display:flex;flex-direction:column;gap:1.5rem;margin-top:2.5rem}
+.ap-item{display:flex;gap:1.2rem;align-items:flex-start;padding:1.2rem;background:rgba(255,255,255,.02);border:1px solid rgba(106,170,80,.08);transition:border-color .3s}
+.ap-item:hover{border-color:rgba(106,170,80,.25)}
+.ap-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(106,170,80,.25);line-height:1;min-width:2.5rem}
+.ap-body .ap-title{font-family:'Noto Serif KR',serif;font-weight:700;font-size:.95rem;color:var(--straw);margin-bottom:.4rem}
+.ap-body .ap-text{font-size:.8rem;color:var(--smoke);line-height:1.75}
+
+/* PLANTING PATTERN */
+#pattern{background:#030d08;padding:6rem 5rem}
+.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:3rem}
+.pattern-diagram{background:rgba(10,42,58,.3);border:1px solid rgba(106,170,80,.12);padding:2.5rem;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+.pattern-diagram svg{width:100%;max-width:400px}
+.pattern-info{}
+.pi-title{font-family:'Noto Serif KR',serif;font-weight:700;font-size:1.1rem;color:var(--straw);margin-bottom:.8rem}
+.pi-desc{font-size:.83rem;color:var(--smoke);line-height:1.8;margin-bottom:1.5rem}
+.adjust-table{width:100%;border-collapse:collapse}
+.adjust-table th{background:rgba(106,170,80,.08);padding:.7rem 1rem;text-align:left;font-family:'Bebas Neue',sans-serif;letter-spacing:.2em;font-size:.7rem;color:var(--lime);border-bottom:1px solid rgba(106,170,80,.15)}
+.adjust-table td{padding:.6rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-size:.8rem;color:var(--straw)}
+.adjust-table tr:hover td{background:rgba(106,170,80,.04)}
+
+/* SPECS */
+#specs{background:linear-gradient(180deg,#030d08 0%,#051a0c 100%)}
+.specs-two{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.spec-group-title{font-family:'Bebas Neue',sans-serif;letter-spacing:.25em;font-size:.75rem;color:var(--lime);margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:1px solid rgba(106,170,80,.2)}
+.spec-row{display:flex;justify-content:space-between;padding:.62rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem}
+.spec-key{color:var(--smoke)}
+.spec-val{color:var(--straw);font-weight:500}
+
+/* MODEL COMPARE */
+#models{background:#030d08}
+.model-compare{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.mc-card{background:rgba(255,255,255,.02);border:1px solid rgba(106,170,80,.1);overflow:hidden;transition:border-color .3s,transform .3s}
+.mc-card:hover{border-color:rgba(106,170,80,.3);transform:translateY(-4px)}
+.mc-card.rec{border-color:rgba(106,170,80,.35);background:rgba(106,170,80,.04)}
+.mc-header{background:rgba(42,122,58,.15);padding:1.5rem;position:relative}
+.mc-rec-badge{position:absolute;top:0;right:0;background:var(--lime);color:var(--deep);font-family:'Bebas Neue',sans-serif;font-size:.65rem;letter-spacing:.15em;padding:.25rem .8rem}
+.mc-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--lime);letter-spacing:.1em;line-height:1}
+.mc-sub{font-size:.75rem;color:var(--smoke);margin-top:.3rem}
+.mc-body{padding:1.5rem}
+.mc-spec{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.8rem}
+.mc-spec-k{color:var(--smoke)}
+.mc-spec-v{color:var(--straw);font-weight:500}
+.mc-footer{padding:1rem 1.5rem;border-top:1px solid rgba(106,170,80,.08)}
+.mc-tag{font-size:.75rem;color:var(--lime)}
+
+/* CTA */
+#cta{background:linear-gradient(135deg,#051a0c 0%,#0a2a1a 100%);text-align:center;padding:6rem 2rem}
+.cta-title{font-family:'Noto Serif KR',serif;font-weight:900;font-size:clamp(2rem,4vw,3rem);color:var(--white);margin-bottom:.8rem}
+.cta-sub{color:var(--smoke);font-size:.95rem;margin-bottom:2rem;font-weight:300}
+.phone-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--rice);letter-spacing:.1em;margin-bottom:.5rem}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+footer{background:#020905;border-top:1px solid rgba(106,170,80,.1);padding:2rem 5rem;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--smoke)}
+.footer-logo{font-family:'Noto Serif KR',serif;font-weight:900;color:var(--rice)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:960px){
+  nav{
+    position: relative;padding:1rem 1.5rem}
+  .hero-inner{grid-template-columns:1fr;padding:2rem;gap:2rem}
+  section{padding:4rem 2rem}
+  .accuracy-layout{grid-template-columns:1fr}
+  .pattern-grid{grid-template-columns:1fr}
+  .specs-two{grid-template-columns:1fr}
+  .model-compare{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:.8rem;text-align:center;padding:2rem}
+}
+@media(max-width:600px){}
+
+      /* ── MOBILE HAMBURGER NAV ── */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 1px solid rgba(201,153,58,0.25);
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+  .nav-toggle:hover { border-color: rgba(201,153,58,0.6); }
+  .nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: var(--gold);
+    border-radius: 0;
+    transition: transform 0.3s ease, opacity 0.2s ease, width 0.3s ease;
+    transform-origin: center;
+  }
+  .nav-toggle span:nth-child(1) { margin-bottom: 5px; }
+  .nav-toggle span:nth-child(2) { width: 70%; align-self: flex-start; margin-bottom: 5px; }
+  .nav-toggle span:nth-child(3) { width: 40%; align-self: flex-start; }
+  .nav-toggle.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); width: 100%; }
+  .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); width: 100%; }
+
+  @media (max-width: 768px) {
+    .nav-toggle { display: flex; }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: rgba(20,13,6,0.98);
+      border-top: 1px solid rgba(201,153,58,0.2);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-links.is-open { display: flex; }
+
+    .nav-links li {
+      border-bottom: 1px solid rgba(201,153,58,0.1);
+    }
+    .nav-links li a {
+      display: block;
+      padding: 1rem 1.6rem;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--straw, #e8d5a0);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      color: var(--gold, #c9993a);
+      background: rgba(201,153,58,0.08);
+    }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">내포농기계<span>NAEBO AGRO</span></a>
+  <button class="nav-toggle" id="mobileMenuBtn" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">홈</a></li>
+    <li><a href="tractor.html">트랙터</a></li>
+    <li><a href="combine.html">콤바인</a></li>
+    <li><a href="transplanter.html" class="active">이앙기</a></li>
+    <li><a href="cultivator.html">관리기</a></li>
+    <li><a href="index.html#contact">문의하기</a></li>
+  </ul>
+</nav>
+
+
+
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-water">
+    <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="wg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#0a2a3a" stop-opacity="0.4"/><stop offset="100%" stop-color="#0a2a3a" stop-opacity="0.9"/></linearGradient></defs>
+      <rect width="1440" height="200" fill="url(#wg)"/>
+      <!-- Water lines ripple -->
+      <path d="M0 60 Q180 50 360 65 Q540 80 720 60 Q900 40 1080 65 Q1260 80 1440 60 L1440 200 L0 200 Z" fill="#0a2a3a" opacity="0.5"/>
+      <path d="M0 80 Q360 65 720 85 Q1080 105 1440 80" stroke="#1a4a5a" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <path d="M0 100 Q360 85 720 105 Q1080 125 1440 100" stroke="#1a4a5a" stroke-width="1" fill="none" opacity="0.35"/>
+      <!-- Seedling reflections -->
+      <g stroke="#2a6a30" stroke-width="1.5" opacity="0.35">
+        <line x1="180" y1="140" x2="175" y2="200"/>
+        <line x1="360" y1="135" x2="355" y2="200"/>
+        <line x1="540" y1="140" x2="535" y2="200"/>
+        <line x1="720" y1="132" x2="715" y2="200"/>
+        <line x1="900" y1="138" x2="895" y2="200"/>
+        <line x1="1080" y1="135" x2="1075" y2="200"/>
+        <line x1="1260" y1="140" x2="1255" y2="200"/>
+      </g>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="h-eyebrow">RICE TRANSPLANTER / DH-P SERIES</div>
+      <h1 class="hero-title">논에서 빛나는<br><em>정밀 이식</em></h1>
+      <p class="hero-desc">내포 논을 위한 정밀 이앙기. 내포농기계 DH-P 시리즈는 균일한 주간·조간 간격과 수중 부양 설계, 자동 깊이 제어로 충남 내포 논에 최적화된 이앙 작업을 실현합니다.</p>
+      <div class="hero-badges">
+        <div class="hbadge">6조 / 8조</div>
+        <div class="hbadge">GPS 직진 보조</div>
+        <div class="hbadge">자동 깊이 제어</div>
+        <div class="hbadge">접이식 플로트</div>
+      </div>
+      <div class="hero-cta">
+        <a href="#models" class="btn-green">모델 비교</a>
+        <a href="#specs" class="btn-ghost">제원 보기</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg viewBox="0 0 560 480" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="tpglow" cx="50%" cy="70%">
+            <stop offset="0%" stop-color="#2a7a3a" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <linearGradient id="wl" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0a3a50" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#061a28"/>
+          </linearGradient>
+        </defs>
+        <rect width="560" height="480" fill="url(#tpglow)"/>
+        <!-- Shadow -->
+        <ellipse cx="280" cy="455" rx="200" ry="16" fill="#000" opacity="0.45"/>
+        <!-- Water field -->
+        <rect x="0" y="380" width="560" height="100" fill="url(#wl)"/>
+        <path d="M0 388 Q140 382 280 390 Q420 398 560 384" stroke="#1a4a5a" stroke-width="1.5" fill="none" opacity="0.7"/>
+        <path d="M0 402 Q140 396 280 404 Q420 412 560 398" stroke="#1a4a5a" stroke-width="1" fill="none" opacity="0.5"/>
+        <!-- Planted seedlings (behind machine) -->
+        <g stroke="#3a8a30" stroke-width="2.5" opacity="0.8" style="transform-origin:bottom center">
+          <line x1="60"  y1="388" x2="52"  y2="358"/>
+          <line x1="52"  y1="358" x2="44"  y2="344"/>
+          <line x1="120" y1="388" x2="112" y2="362"/>
+          <line x1="112" y1="362" x2="106" y2="348"/>
+          <line x1="180" y1="388" x2="172" y2="360"/>
+          <line x1="172" y1="360" x2="166" y2="346"/>
+          <line x1="240" y1="388" x2="232" y2="358"/>
+        </g>
+        <!-- Seedling leaves -->
+        <g fill="none" stroke="#5aaa40" stroke-width="1.5" opacity="0.7">
+          <path d="M44 344 Q36 330 28 328"/><path d="M44 344 Q52 330 58 328"/>
+          <path d="M106 348 Q98 334 90 332"/><path d="M106 348 Q114 334 120 332"/>
+          <path d="M166 346 Q158 332 150 330"/><path d="M166 346 Q174 332 180 330"/>
+        </g>
+        <!-- Float pontoons -->
+        <ellipse cx="175" cy="394" rx="82" ry="13" fill="#4a3a10" stroke="#8b6a1a" stroke-width="1.5"/>
+        <ellipse cx="385" cy="394" rx="82" ry="13" fill="#4a3a10" stroke="#8b6a1a" stroke-width="1.5"/>
+        <!-- Main body/frame -->
+        <rect x="108" y="295" width="344" height="82" rx="5" fill="#3a7a30" stroke="#6aaa50" stroke-width="2"/>
+        <!-- Body details -->
+        <line x1="180" y1="295" x2="180" y2="377" stroke="#2a6a20" stroke-width="2"/>
+        <line x1="280" y1="295" x2="280" y2="377" stroke="#2a6a20" stroke-width="2"/>
+        <line x1="380" y1="295" x2="380" y2="377" stroke="#2a6a20" stroke-width="2"/>
+        <!-- Planting arms (animated) -->
+        <g class="plant-arm">
+          <g stroke="#c9993a" stroke-width="3" fill="none" stroke-linecap="round">
+            <path d="M 140 377 Q 142 357 138 340"/>
+            <path d="M 182 377 Q 184 357 180 340"/>
+            <path d="M 224 377 Q 226 357 222 340"/>
+            <path d="M 266 377 Q 268 357 264 340"/>
+            <path d="M 308 377 Q 310 357 306 340"/>
+            <path d="M 350 377 Q 352 357 348 340"/>
+            <path d="M 392 377 Q 394 357 390 340"/>
+            <path d="M 434 377 Q 436 357 432 340"/>
+          </g>
+          <!-- Planting claws -->
+          <g stroke="#a0400d" stroke-width="2.5" fill="none">
+            <path d="M 135 340 L 130 325 M 141 340 L 145 325"/>
+            <path d="M 177 340 L 172 325 M 183 340 L 187 325"/>
+            <path d="M 219 340 L 214 325 M 225 340 L 229 325"/>
+            <path d="M 261 340 L 256 325 M 267 340 L 271 325"/>
+            <path d="M 303 340 L 298 325 M 309 340 L 313 325"/>
+            <path d="M 345 340 L 340 325 M 351 340 L 355 325"/>
+            <path d="M 387 340 L 382 325 M 393 340 L 397 325"/>
+            <path d="M 429 340 L 424 325 M 435 340 L 439 325"/>
+          </g>
+        </g>
+        <!-- Seedling tray (mat) -->
+        <rect x="95" y="222" width="370" height="78" rx="5" fill="#2a6028" stroke="#6aaa50" stroke-width="2"/>
+        <!-- Seedling mat grid -->
+        <g fill="#5ab040" opacity="0.8">
+          <rect x="108" y="232" width="18" height="52" rx="2"/>
+          <rect x="133" y="232" width="18" height="52" rx="2"/>
+          <rect x="158" y="232" width="18" height="52" rx="2"/>
+          <rect x="183" y="232" width="18" height="52" rx="2"/>
+          <rect x="208" y="232" width="18" height="52" rx="2"/>
+          <rect x="233" y="232" width="18" height="52" rx="2"/>
+          <rect x="258" y="232" width="18" height="52" rx="2"/>
+          <rect x="283" y="232" width="18" height="52" rx="2"/>
+          <rect x="308" y="232" width="18" height="52" rx="2"/>
+          <rect x="333" y="232" width="18" height="52" rx="2"/>
+          <rect x="358" y="232" width="18" height="52" rx="2"/>
+          <rect x="383" y="232" width="18" height="52" rx="2"/>
+          <rect x="408" y="232" width="18" height="52" rx="2"/>
+          <rect x="433" y="232" width="18" height="52" rx="2"/>
+        </g>
+        <!-- Seedling leaves on mat -->
+        <g stroke="#8acc60" stroke-width="1" fill="none" opacity="0.6">
+          <path d="M 117 240 Q 112 232 108 228"/><path d="M 117 240 Q 122 232 126 228"/>
+          <path d="M 167 238 Q 162 230 158 226"/><path d="M 167 238 Q 172 230 176 226"/>
+          <path d="M 267 236 Q 262 228 258 224"/><path d="M 267 236 Q 272 228 276 224"/>
+        </g>
+        <!-- Operator area -->
+        <rect x="225" y="175" width="110" height="52" rx="4" fill="#4a3a10" stroke="#8b6a1a" stroke-width="1.5"/>
+        <!-- Seat -->
+        <ellipse cx="280" cy="172" rx="28" ry="12" fill="#2b1d0e"/>
+        <!-- Steering wheel -->
+        <circle cx="280" cy="155" r="22" fill="none" stroke="#c9993a" stroke-width="3"/>
+        <circle cx="280" cy="155" r="5" fill="#c9993a"/>
+        <line x1="280" y1="133" x2="280" y2="177" stroke="#8b6a1a" stroke-width="2"/>
+        <line x1="258" y1="155" x2="302" y2="155" stroke="#8b6a1a" stroke-width="2"/>
+        <!-- Engine hood -->
+        <rect x="238" y="130" width="84" height="50" rx="3" fill="#3a2a10" stroke="#8b6a1a" stroke-width="1.5"/>
+        <!-- Exhaust -->
+        <rect x="278" y="96" width="10" height="42" fill="#1a1008" rx="2"/>
+        <ellipse cx="283" cy="96" rx="8" ry="4" fill="#333"/>
+        <!-- GPS antenna (optional feature visual) -->
+        <line x1="260" y1="130" x2="255" y2="105" stroke="#6aaa50" stroke-width="1.5"/>
+        <circle cx="255" cy="103" r="4" fill="#6aaa50"/>
+        <!-- Row marker arms -->
+        <line x1="95" y1="336" x2="48" y2="350" stroke="#8b6a1a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="44" cy="353" r="6" fill="#c9993a"/>
+        <line x1="465" y1="336" x2="512" y2="350" stroke="#8b6a1a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="516" cy="353" r="6" fill="#c9993a"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="kd"></div>
+
+<!-- ACCURACY -->
+<section id="accuracy">
+  <div class="accuracy-layout">
+    <div>
+      <div class="sec-label reveal">PRECISION PLANTING</div>
+      <div class="sec-bar reveal"></div>
+      <h2 class="sec-title reveal">±5mm 정밀 이식의<br>비결</h2>
+      <div class="accuracy-points">
+        <div class="ap-item reveal">
+          <div class="ap-num">01</div>
+          <div class="ap-body">
+            <div class="ap-title">자동 깊이 감지 제어</div>
+            <div class="ap-text">플로트에 내장된 깊이 센서가 논바닥의 요철을 실시간 감지합니다. 이식 깊이를 ±5mm 오차 이내로 자동 유지합니다.</div>
+          </div>
+        </div>
+        <div class="ap-item reveal">
+          <div class="ap-num">02</div>
+          <div class="ap-body">
+            <div class="ap-title">수중 부양 플로트 설계</div>
+            <div class="ap-text">넓은 면적의 플로트가 기체를 수면 위에 안정적으로 부양시킵니다. 연약한 논바닥에서도 침하 없이 균일한 작업이 가능합니다.</div>
+          </div>
+        </div>
+        <div class="ap-item reveal">
+          <div class="ap-num">03</div>
+          <div class="ap-body">
+            <div class="ap-title">GPS 직진 보조 (옵션)</div>
+            <div class="ap-text">GPS 기반 직진 보조 시스템으로 일정한 간격의 줄 심기를 실현합니다. 숙련되지 않은 작업자도 전문가 수준의 결과를 얻습니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accuracy-visual">
+      <div class="acc-svg-wrap">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="paddy" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0a2a3a"/>
+              <stop offset="100%" stop-color="#061820"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="400" fill="url(#paddy)"/>
+          <!-- Water surface -->
+          <rect x="0" y="200" width="400" height="200" fill="#0a3040" opacity="0.5"/>
+          <path d="M0 205 Q100 198 200 208 Q300 218 400 205" stroke="#1a5060" stroke-width="1.5" fill="none"/>
+          <!-- Grid overlay -->
+          <g stroke="rgba(106,170,80,0.12)" stroke-width="1">
+            <line x1="0" y1="100" x2="400" y2="100"/>
+            <line x1="0" y1="200" x2="400" y2="200"/>
+            <line x1="0" y1="300" x2="400" y2="300"/>
+            <line x1="100" y1="0" x2="100" y2="400"/>
+            <line x1="200" y1="0" x2="200" y2="400"/>
+            <line x1="300" y1="0" x2="300" y2="400"/>
+          </g>
+          <!-- Planted rice (top view dots) -->
+          <g fill="#5aaa40">
+            <circle cx="80"  cy="100" r="6" opacity="0.9"/>
+            <circle cx="160" cy="100" r="6" opacity="0.9"/>
+            <circle cx="240" cy="100" r="6" opacity="0.9"/>
+            <circle cx="320" cy="100" r="6" opacity="0.9"/>
+            <circle cx="80"  cy="200" r="6" opacity="0.9"/>
+            <circle cx="160" cy="200" r="6" opacity="0.9"/>
+            <circle cx="240" cy="200" r="6" opacity="0.9"/>
+            <circle cx="320" cy="200" r="6" opacity="0.9"/>
+            <circle cx="80"  cy="300" r="6" opacity="0.9"/>
+            <circle cx="160" cy="300" r="6" opacity="0.9"/>
+            <circle cx="240" cy="300" r="6" opacity="0.9"/>
+            <circle cx="320" cy="300" r="6" opacity="0.9"/>
+          </g>
+          <!-- Dimension arrows -->
+          <line x1="80" y1="140" x2="160" y2="140" stroke="#c9993a" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="160" y1="140" x2="80" y2="140" stroke="#c9993a" stroke-width="1.5"/>
+          <text x="120" y="132" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="11" fill="#c9993a" letter-spacing="1">30cm</text>
+          <line x1="48" y1="100" x2="48" y2="200" stroke="#6aaa50" stroke-width="1.5"/>
+          <text x="18" y="155" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="11" fill="#6aaa50" letter-spacing="1" transform="rotate(-90,18,155)">30cm</text>
+          <!-- Center highlight -->
+          <circle cx="200" cy="200" r="20" fill="none" stroke="#6aaa50" stroke-width="2" stroke-dasharray="5 3" opacity="0.5"/>
+          <text x="200" y="380" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="14" fill="#6aaa50" opacity="0.5" letter-spacing="3">조감도 / TOP VIEW</text>
+        </svg>
+      </div>
+      <div class="acc-stat tr">
+        <div class="sv">±5mm</div>
+        <div class="sk">이식 깊이 정밀도</div>
+      </div>
+      <div class="acc-stat bl">
+        <div class="sv">8조</div>
+        <div class="sk">동시 이식 조수</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<!-- PLANTING PATTERN -->
+<section id="pattern" style="background:#030d08;padding:6rem 5rem">
+  <div class="sec-label reveal">PLANTING SETTINGS</div>
+  <div class="sec-bar reveal"></div>
+  <h2 class="sec-title reveal">주간·조간 간격 설정 가이드</h2>
+  <div class="pattern-grid">
+    <div class="pattern-diagram reveal">
+      <svg viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="380" height="300" fill="transparent"/>
+        <!-- Row and column lines -->
+        <g stroke="rgba(106,170,80,0.15)" stroke-width="1" stroke-dasharray="4 4">
+          <line x1="40" y1="0" x2="40" y2="300"/>
+          <line x1="130" y1="0" x2="130" y2="300"/>
+          <line x1="220" y1="0" x2="220" y2="300"/>
+          <line x1="310" y1="0" x2="310" y2="300"/>
+          <line x1="0" y1="50" x2="380" y2="50"/>
+          <line x1="0" y1="130" x2="380" y2="130"/>
+          <line x1="0" y1="210" x2="380" y2="210"/>
+        </g>
+        <!-- Seedlings -->
+        <g>
+          <g stroke="#5aaa40" stroke-width="2.5" fill="none">
+            <line x1="40" y1="50" x2="38" y2="35"/>
+            <line x1="38" y1="35" x2="34" y2="26"/>
+            <line x1="130" y1="50" x2="128" y2="35"/><line x1="128" y1="35" x2="124" y2="26"/>
+            <line x1="220" y1="50" x2="218" y2="35"/><line x1="218" y1="35" x2="214" y2="26"/>
+            <line x1="310" y1="50" x2="308" y2="35"/><line x1="308" y1="35" x2="304" y2="26"/>
+            <line x1="40"  y1="130" x2="38" y2="115"/><line x1="38" y1="115" x2="34" y2="106"/>
+            <line x1="130" y1="130" x2="128" y2="115"/><line x1="128" y1="115" x2="124" y2="106"/>
+            <line x1="220" y1="130" x2="218" y2="115"/><line x1="218" y1="115" x2="214" y2="106"/>
+            <line x1="310" y1="130" x2="308" y2="115"/><line x1="308" y1="115" x2="304" y2="106"/>
+            <line x1="40"  y1="210" x2="38" y2="195"/><line x1="38" y1="195" x2="34" y2="186"/>
+            <line x1="130" y1="210" x2="128" y2="195"/><line x1="128" y1="195" x2="124" y2="186"/>
+            <line x1="220" y1="210" x2="218" y2="195"/><line x1="218" y1="195" x2="214" y2="186"/>
+            <line x1="310" y1="210" x2="308" y2="195"/><line x1="308" y1="195" x2="304" y2="186"/>
+          </g>
+          <!-- Leaf pairs -->
+          <g stroke="#8acc60" stroke-width="1" fill="none" opacity="0.7">
+            <path d="M34 26 Q28 18 22 16"/><path d="M34 26 Q40 18 46 16"/>
+          </g>
+        </g>
+        <!-- Measurements -->
+        <line x1="40" y1="270" x2="130" y2="270" stroke="#c9993a" stroke-width="1.5"/>
+        <line x1="40" y1="265" x2="40" y2="275" stroke="#c9993a" stroke-width="1.5"/>
+        <line x1="130" y1="265" x2="130" y2="275" stroke="#c9993a" stroke-width="1.5"/>
+        <text x="85" y="288" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="12" fill="#c9993a" letter-spacing="2">조간 30cm</text>
+        <line x1="350" y1="50" x2="350" y2="130" stroke="#6aaa50" stroke-width="1.5"/>
+        <line x1="345" y1="50" x2="355" y2="50" stroke="#6aaa50" stroke-width="1.5"/>
+        <line x1="345" y1="130" x2="355" y2="130" stroke="#6aaa50" stroke-width="1.5"/>
+        <text x="375" y="95" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="11" fill="#6aaa50" letter-spacing="1" transform="rotate(90,375,95)">주간</text>
+      </svg>
+    </div>
+    <div class="pattern-info reveal">
+      <div class="pi-title">재배 목적별 추천 이식 간격</div>
+      <div class="pi-desc">이식 간격은 작물 생육과 수확량에 직결됩니다. 품종과 재배 방식에 맞는 최적 설정을 선택하세요.</div>
+      <table class="adjust-table">
+        <thead>
+          <tr><th>재배 목적</th><th>주간 간격</th><th>조간 간격</th><th>권장 품종</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>일반 논농사</td><td>18cm</td><td>30cm</td><td>삼광, 추청</td></tr>
+          <tr><td>고품질 쌀 생산</td><td>20cm</td><td>30cm</td><td>히토메보레</td></tr>
+          <tr><td>조기 이앙</td><td>16cm</td><td>30cm</td><td>오대, 운광</td></tr>
+          <tr><td>기계화 재배</td><td>14cm</td><td>30cm</td><td>다수확 품종</td></tr>
+          <tr><td>직접 지정</td><td>10~20cm</td><td>30cm</td><td>무단 조절</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<!-- SPECS -->
+<section id="specs">
+  <div class="sec-label reveal">SPECIFICATIONS</div>
+  <div class="sec-bar reveal"></div>
+  <h2 class="sec-title reveal">DH-P8 (8조) 상세 제원</h2>
+  <div class="specs-two">
+    <div>
+      <div class="spec-group-title reveal">기본 사양</div>
+      <div class="spec-row reveal"><span class="spec-key">이식 조수</span><span class="spec-val">8조 동시 이식</span></div>
+      <div class="spec-row reveal"><span class="spec-key">엔진 형식</span><span class="spec-val">수냉 2기통 디젤</span></div>
+      <div class="spec-row reveal"><span class="spec-key">엔진 출력</span><span class="spec-val">20 HP / 3,000 rpm</span></div>
+      <div class="spec-row reveal"><span class="spec-key">연료탱크</span><span class="spec-val">20 L</span></div>
+      <div class="spec-group-title reveal" style="margin-top:1.5rem">이식부</div>
+      <div class="spec-row reveal"><span class="spec-key">이식 방식</span><span class="spec-val">회전식 이식암</span></div>
+      <div class="spec-row reveal"><span class="spec-key">주간 간격</span><span class="spec-val">10 ~ 20 cm (무단 조절)</span></div>
+      <div class="spec-row reveal"><span class="spec-key">조간 간격</span><span class="spec-val">30 cm (고정)</span></div>
+      <div class="spec-row reveal"><span class="spec-key">이식 깊이</span><span class="spec-val">10 ~ 30 mm (자동 제어)</span></div>
+    </div>
+    <div>
+      <div class="spec-group-title reveal">주행부</div>
+      <div class="spec-row reveal"><span class="spec-key">구동 방식</span><span class="spec-val">수중 부양 플로트 + 후륜구동</span></div>
+      <div class="spec-row reveal"><span class="spec-key">최대 작업 속도</span><span class="spec-val">1.2 m/s</span></div>
+      <div class="spec-row reveal"><span class="spec-key">변속</span><span class="spec-val">2단 (작업 / 이동)</span></div>
+      <div class="spec-group-title reveal" style="margin-top:1.5rem">모판부</div>
+      <div class="spec-row reveal"><span class="spec-key">모판 탑재량</span><span class="spec-val">8매 (3.6 매트/회)</span></div>
+      <div class="spec-row reveal"><span class="spec-key">모 공급 방식</span><span class="spec-val">자동 세로 이송</span></div>
+      <div class="spec-row reveal"><span class="spec-key">기체 중량</span><span class="spec-val">580 kg</span></div>
+      <div class="spec-row reveal"><span class="spec-key">전장 × 전폭</span><span class="spec-val">3,580 × 2,680 mm</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<!-- MODEL COMPARE -->
+<section id="models">
+  <div class="sec-label reveal">MODEL LINEUP</div>
+  <div class="sec-bar reveal"></div>
+  <h2 class="sec-title reveal">내포농기계 DH-P 시리즈 모델 비교</h2>
+  <div class="model-compare">
+    <div class="mc-card reveal">
+      <div class="mc-header">
+        <div class="mc-name">DH-P6</div>
+        <div class="mc-sub">6조 / 소규모 농가 최적</div>
+      </div>
+      <div class="mc-body">
+        <div class="mc-spec"><span class="mc-spec-k">이식 조수</span><span class="mc-spec-v">6조</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">엔진</span><span class="mc-spec-v">15 HP</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">작업 속도</span><span class="mc-spec-v">1.0 m/s</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">모판 탑재</span><span class="mc-spec-v">6매</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">GPS 직진</span><span class="mc-spec-v">옵션</span></div>
+      </div>
+      <div class="mc-footer"><div class="mc-tag">소형 논, 1~2ha 적합</div></div>
+    </div>
+    <div class="mc-card rec reveal">
+      <div class="mc-header">
+        <div class="mc-rec-badge">추천</div>
+        <div class="mc-name">DH-P8</div>
+        <div class="mc-sub">8조 / 중규모 범용 모델</div>
+      </div>
+      <div class="mc-body">
+        <div class="mc-spec"><span class="mc-spec-k">이식 조수</span><span class="mc-spec-v">8조</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">엔진</span><span class="mc-spec-v">20 HP</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">작업 속도</span><span class="mc-spec-v">1.2 m/s</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">모판 탑재</span><span class="mc-spec-v">8매</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">GPS 직진</span><span class="mc-spec-v">기본 탑재</span></div>
+      </div>
+      <div class="mc-footer"><div class="mc-tag">2~5ha 중규모 농가 표준</div></div>
+    </div>
+    <div class="mc-card reveal">
+      <div class="mc-header">
+        <div class="mc-name">DH-P8 PRO</div>
+        <div class="mc-sub">8조 / 대규모 자동화</div>
+      </div>
+      <div class="mc-body">
+        <div class="mc-spec"><span class="mc-spec-k">이식 조수</span><span class="mc-spec-v">8조</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">엔진</span><span class="mc-spec-v">24 HP</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">작업 속도</span><span class="mc-spec-v">1.5 m/s</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">모판 탑재</span><span class="mc-spec-v">12매 (자동)</span></div>
+        <div class="mc-spec"><span class="mc-spec-k">자율주행</span><span class="mc-spec-v">반자율 지원</span></div>
+      </div>
+      <div class="mc-footer"><div class="mc-tag">5ha 이상 대규모 농가</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="kd"></div>
+
+<section id="cta" style="background:linear-gradient(135deg,#051a0c 0%,#0a2a1a 100%);text-align:center;padding:6rem 2rem">
+  <div class="sec-label" style="text-align:center">CONTACT US</div>
+  <div class="sec-bar" style="margin:.8rem auto 1.5rem"></div>
+  <div class="phone-num">041-634-7111 / 041-634-7110</div>
+  <h2 class="cta-title">이앙기 시연 신청</h2>
+  <p class="cta-sub">이앙 철에 맞춰 전국 논두렁 시연회를 진행합니다</p>
+  <div class="cta-btns">
+    <a href="tel:0416347111" class="btn-green">☎ 041-634-7111</a>
+      <a href="tel:0416347110" class="btn-ghost">☎ 041-634-7110</a>
+    <a href="index.html" class="btn-ghost">← 메인으로</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">내포농기계</div>
+  <div>© 2025 내포농기계(주). All rights reserved.</div>
+  <div>충남 홍성군 구항면 구항길 264번길 22 | 041-634-7111 / 041-634-7110</div>
+</footer>
+
+<script>
+const reveals=document.querySelectorAll('.reveal');
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');ro.unobserve(x.target)}})},{threshold:0.12});
+reveals.forEach(r=>ro.observe(r));
+
+  /* ── hamburger ── */
+  ;(function(){
+    var btn = document.getElementById('mobileMenuBtn');
+    var drawer = document.getElementById('navLinks');
+    var dim = null;
+    if(!btn||!drawer) return;
+    function show(){btn.classList.add('is-open');drawer.classList.add('is-open');}
+    function hide(){btn.classList.remove('is-open');drawer.classList.remove('is-open');}
+    btn.addEventListener('click',function(e){e.stopPropagation();drawer.classList.contains('is-open')?hide():show();});
+    
+    drawer.querySelectorAll('a').forEach(function(a){a.addEventListener('click',hide);});
+  })();
+
+</script>
+</body>
+</html>
